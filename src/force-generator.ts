@@ -21,6 +21,15 @@ export class ParticleGravity implements ParticleForceGenerator {
   }
 }
 
+export class ParticleDrag implements ParticleForceGenerator {
+
+  constructor(private k1: number, private k2: number) {}
+  updateForce(particle: Particle, dt: number) {
+    const force = particle.position.clone()
+  }
+
+}
+
 export class ParticleSpring implements ParticleForceGenerator {
   private _other: Particle;
   private _springConstant: number;
@@ -49,7 +58,7 @@ export class ParticleSpring implements ParticleForceGenerator {
   }
 
   updateForce(particle: Particle, dt: number): void {
-    const force: Vector3 = particle.position;
+    const force: Vector3 = particle.position.clone();
     force.sub(this._other.position);
     const magnitude: number =
       this._springConstant * Math.abs(force.length() - this._restLength);
@@ -87,8 +96,8 @@ export class ParticleAnchoredSpring implements ParticleForceGenerator {
   }
 
   updateForce(particle: Particle, dt: number): void {
-    const force: Vector3 = particle.position;
-    force.sub(this._anchor);
+    const force = new Vector3();
+    force.subVectors(particle.position, this._anchor);
     const magnitude: number =
       this._springConstant * (this._restLength - force.length());
     force.normalize();

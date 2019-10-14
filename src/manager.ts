@@ -1,6 +1,7 @@
 import Particle from "./particle";
 import { Vector3 } from "three";
 import ParticleForceRegistry from "./force-registry";
+import { Spring, createSpring } from "./spring";
 import {
   ParticleGravity,
   ParticleSpring,
@@ -9,6 +10,7 @@ import {
 
 export class ParticleManager {
   private _particles: Particle[] = [];
+  private _springs: Spring[] = [];
   private _forceRegistry: ParticleForceRegistry;
 
   constructor() {
@@ -28,13 +30,16 @@ export class ParticleManager {
     // this._forceRegistry.add(p1, gravity);
     this._forceRegistry.add(p2, gravity);
 
-    const k: number = 0.99;
-    const ell: number = 2.5;
+    const k: number = 1.0;
+    const ell: number = 2.1;
+    const anchor: Vector3 = new Vector3(0.0, 0.0, 0.0);
     const spring1: ParticleAnchoredSpring = new ParticleAnchoredSpring(
-      new Vector3(0.0, 0.0, 0.0),
+      anchor,
       k,
       ell
     );
+    const springObject: Spring = createSpring(p1.position, anchor);
+    this._springs.push(springObject);
     // const spring2: ParticleSpring = new ParticleSpring(p1, k, ell);
 
     this._forceRegistry.add(p1, spring1);
@@ -50,7 +55,7 @@ export class ParticleManager {
     return this._particles;
   }
 
-  public set particles(value: Particle[]) {
-    this._particles = value;
+  public get springs(): Spring[] {
+    return this._springs;
   }
 }
