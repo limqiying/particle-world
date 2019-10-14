@@ -14,3 +14,8 @@ export const numMaterial = new THREE.MeshToonMaterial({
   color: "#ef6C00",
   flatShading: true
 });
+
+export const numMaterial2 = new THREE.MeshToonMaterial({
+  color: "#ef6C00",
+  flatShading: true
+});
