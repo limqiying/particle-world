@@ -19,8 +19,8 @@ export default class Particle {
   }
 
   public get mass(): number {
-		return this._mass;
-	}
+    return this._mass;
+  }
 
   get position(): Vector3 {
     return this._position;
