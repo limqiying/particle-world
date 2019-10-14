@@ -1,9 +1,9 @@
-import * as THREE from 'three';
+import * as THREE from "three";
 
 function hashFunc(func: Function) {
   return func
     .toString()
-    .split('')
+    .split("")
     .reduce((a, b) => {
       a = (a << 5) - a + b.charCodeAt(0);
       return a & a;
@@ -19,16 +19,16 @@ interface RaycasterListeners {
 }
 
 type PointerEventNames =
-  | 'gotpointercapture'
-  | 'lostpointercapture'
-  | 'pointercancel'
-  | 'pointerdown'
-  | 'pointerenter'
-  | 'pointerleave'
-  | 'pointermove'
-  | 'pointerout'
-  | 'pointerover'
-  | 'pointerup';
+  | "gotpointercapture"
+  | "lostpointercapture"
+  | "pointercancel"
+  | "pointerdown"
+  | "pointerenter"
+  | "pointerleave"
+  | "pointermove"
+  | "pointerout"
+  | "pointerover"
+  | "pointerup";
 
 export default class Raycaster {
   private listeners: RaycasterListeners = {};

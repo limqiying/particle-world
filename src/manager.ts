@@ -1,5 +1,5 @@
-import Particle from './particle';
-import { Vector3 } from 'three';
+import Particle from "./particle";
+import { Vector3 } from "three";
 
 export class ParticleManager {
   private _particles: Particle[] = [];

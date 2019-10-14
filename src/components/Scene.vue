@@ -1,6 +1,11 @@
 <template>
   <div class="scene" ref="scene">
-    <ParticleMesh v-for="p in manager.particles" :key="p.id" :particle="p" :radius="1" />
+    <ParticleMesh
+      v-for="p in manager.particles"
+      :key="p.id"
+      :particle="p"
+      :radius="1"
+    />
   </div>
 </template>
 
