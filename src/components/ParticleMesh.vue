@@ -12,10 +12,8 @@ import Particle from "../particle";
 
 @Component<ParticleMesh>({
   mounted() {
-    this.$nextTick(() => {
-      this.$parent.scene.add(this.object3D);
-      this.updatePosition();
-    });
+    this.$parent.scene.add(this.object3D);
+    this.updatePosition();
   }
 })
 export default class ParticleMesh extends Vue {
