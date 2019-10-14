@@ -7,14 +7,20 @@ export default class Particle {
   private _acceleration: Vector3 = new Vector3(0.0, 0.0, 0.0);
   private _damping: number = 0.0;
   private _inverseMass: number;
+  private _mass: number;
   private _forceAccumulator: Vector3 = new Vector3(0.0, 0.0, 0.0);
 
   constructor(id: number, position: Vector3, velocity: Vector3, mass: number) {
     this._id = id;
     this._position = position;
     this._velocity = velocity;
+    this._mass = mass;
     this._inverseMass = 1.0 / mass;
   }
+
+  public get mass(): number {
+		return this._mass;
+	}
 
   get position(): Vector3 {
     return this._position;
