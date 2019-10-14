@@ -4,7 +4,17 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
-  mutations: {},
-  actions: {}
+  state: {
+    isPlaying: false
+  },
+  mutations: {
+    togglePlay(state) {
+      state.isPlaying = !state.isPlaying;
+    }
+  },
+  actions: {
+    togglePlay(context) {
+      context.commit("togglePlay");
+    }
+  }
 });
