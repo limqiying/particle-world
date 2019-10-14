@@ -58,3 +58,41 @@ export class ParticleSpring implements ParticleForceGenerator {
     particle.addForce(force);
   }
 }
+
+export class ParticleAnchoredSpring implements ParticleForceGenerator {
+  private _anchor: Vector3;
+  private _springConstant: number;
+  private _restLength: number;
+
+  constructor(anchor: Vector3, k: number, ell: number) {
+    this._anchor = anchor;
+    this._springConstant = k;
+    this._restLength = ell;
+  }
+
+  get restLength(): number {
+    return this._restLength;
+  }
+
+  set restLength(value: number) {
+    this._restLength = value;
+  }
+
+  get springConstant(): number {
+    return this._springConstant;
+  }
+
+  set springConstant(value: number) {
+    this._springConstant = value;
+  }
+
+  updateForce(particle: Particle, dt: number): void {
+    const force: Vector3 = particle.position;
+    force.sub(this._anchor);
+    const magnitude: number =
+      this._springConstant * (this._restLength - force.length());
+    force.normalize();
+    force.multiplyScalar(magnitude);
+    particle.addForce(force);
+  }
+}

@@ -73,7 +73,7 @@ export default class Scene extends Vue {
   }
 
   private update(): void {
-    this.manager.updateParticles(0.01);
+    this.manager.updateParticles(0.1);
   }
 
   private renderScene(): void {
