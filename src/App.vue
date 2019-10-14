@@ -1,7 +1,6 @@
 <template>
   <v-app>
-    <Scene>
-    </Scene>
+    <Scene></Scene>
   </v-app>
 </template>
 

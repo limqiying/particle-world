@@ -3,7 +3,7 @@ import App from "./App.vue";
 import store from "./store";
 import "./registerServiceWorker";
 import vuetify from "./plugins/vuetify";
-import 'vuetify/dist/vuetify.min.css';
+import "vuetify/dist/vuetify.min.css";
 
 Vue.config.productionTip = false;
 

@@ -1,23 +1,18 @@
 <template>
   <div class="scene" ref="scene">
-      <ParticleMesh
-      v-for="p in manager.particles"
-      :key="p.id"
-      :particle="p"
-      :radius = "1"
-      />
+    <ParticleMesh v-for="p in manager.particles" :key="p.id" :particle="p" :radius="1" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import * as THREE from "three";
-import { ParticleManager } from '../manager';
-import ParticleMesh from './ParticleMesh.vue'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { ParticleManager } from "../manager";
+import ParticleMesh from "./ParticleMesh.vue";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 @Component<Scene>({
-    components: {
+  components: {
     ParticleMesh
   },
   mounted() {
@@ -30,11 +25,11 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
     );
     this.renderer.setSize(el.clientWidth, el.clientHeight);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    
+
     this.scene.add(
       this.ambientLight,
       this.hemisphereLight,
-      this.directionalLight,
+      this.directionalLight
     );
     this.directionalLight.position.set(150, 350, 350);
 
@@ -43,14 +38,10 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
     this.camera.position.z = 5;
 
     this.animate();
-  },
+  }
 })
 export default class Scene extends Vue {
-  private hemisphereLight = new THREE.HemisphereLight(
-      0xaaaaaa,
-      0x000000,
-      0.9
-  );
+  private hemisphereLight = new THREE.HemisphereLight(0xaaaaaa, 0x000000, 0.9);
 
   private directionalLight = new THREE.DirectionalLight(0xffffff, 0.9);
 
@@ -72,7 +63,6 @@ export default class Scene extends Vue {
     this.manager.updateParticles(0.01);
     requestAnimationFrame(this.animate);
   }
-
 }
 </script>
 

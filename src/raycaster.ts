@@ -1,9 +1,9 @@
-import * as THREE from 'three';
+import * as THREE from "three";
 
 function hashFunc(func: Function) {
   return func
     .toString()
-    .split('')
+    .split("")
     .reduce((a, b) => {
       a = (a << 5) - a + b.charCodeAt(0);
       return a & a;
@@ -19,16 +19,16 @@ interface RaycasterListeners {
 }
 
 type PointerEventNames =
-  | 'gotpointercapture'
-  | 'lostpointercapture'
-  | 'pointercancel'
-  | 'pointerdown'
-  | 'pointerenter'
-  | 'pointerleave'
-  | 'pointermove'
-  | 'pointerout'
-  | 'pointerover'
-  | 'pointerup';
+  | "gotpointercapture"
+  | "lostpointercapture"
+  | "pointercancel"
+  | "pointerdown"
+  | "pointerenter"
+  | "pointerleave"
+  | "pointermove"
+  | "pointerout"
+  | "pointerover"
+  | "pointerup";
 
 export default class Raycaster {
   private listeners: RaycasterListeners = {};
@@ -49,7 +49,7 @@ export default class Raycaster {
   private raycast(
     event: PointerEvent,
     object3D: THREE.Object3D,
-    handler: (event: PointerEvent) => void,
+    handler: (event: PointerEvent) => void
   ) {
     this.mouse.x = (event.clientX / this.element.clientWidth) * 2 - 1;
     this.mouse.y = -(event.clientY / this.element.clientHeight) * 2 + 1;
@@ -64,10 +64,11 @@ export default class Raycaster {
   on(
     eventName: PointerEventNames,
     object3D: THREE.Object3D,
-    handler: (event: PointerEvent) => void,
+    handler: (event: PointerEvent) => void
   ) {
     if (!this.listeners[eventName]) this.listeners[eventName] = {};
-    const listener = (event: PointerEvent) => this.raycast(event, object3D, handler);
+    const listener = (event: PointerEvent) =>
+      this.raycast(event, object3D, handler);
     const listeners = this.listeners[eventName];
     const hashedHandler = hashFunc(handler);
     listeners![hashedHandler] = listener;
@@ -85,4 +86,4 @@ export default class Raycaster {
       }
     }
   }
-} 
+}
