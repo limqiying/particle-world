@@ -65,7 +65,6 @@ export default class Scene extends Vue {
 
   @Watch("isPlaying")
   onPlayToggled(play: boolean) {
-    console.log("hi");
     if (play) {
       this.play();
     } else {
@@ -74,11 +73,11 @@ export default class Scene extends Vue {
   }
 
   private update(): void {
-    this.controls.update();
     this.manager.updateParticles(0.01);
   }
 
   private renderScene(): void {
+    this.controls.update();
     this.renderer.render(this.scene, this.camera);
   }
 
@@ -90,7 +89,9 @@ export default class Scene extends Vue {
   }
 
   pause(): void {
-    this.renderer.setAnimationLoop(null);
+     this.renderer.setAnimationLoop(() => {
+      this.renderScene();
+    });
   }
 
   get isPlaying() {
