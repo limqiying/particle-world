@@ -10,11 +10,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import * as THREE from "three";
 import { ParticleManager } from "../manager";
 import ParticleMesh from "./ParticleMesh.vue";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import store from "@/store";
 
 @Component<Scene>({
   components: {
@@ -42,7 +43,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
     this.controls.enablePan = false;
     this.camera.position.z = 5;
 
-    this.animate();
+    this.renderScene();
   }
 })
 export default class Scene extends Vue {
@@ -62,11 +63,38 @@ export default class Scene extends Vue {
 
   scene = new THREE.Scene();
 
-  private animate() {
-    this.renderer.render(this.scene, this.camera);
+  @Watch("isPlaying")
+  onPlayToggled(play: boolean) {
+    console.log("hi");
+    if (play) {
+      this.play();
+    } else {
+      this.pause();
+    }
+  }
+
+  private update(): void {
     this.controls.update();
     this.manager.updateParticles(0.01);
-    requestAnimationFrame(this.animate);
+  }
+
+  private renderScene(): void {
+    this.renderer.render(this.scene, this.camera);
+  }
+
+  play(): void {
+    this.renderer.setAnimationLoop(() => {
+      this.renderScene();
+      this.update();
+    });
+  }
+
+  pause(): void {
+    this.renderer.setAnimationLoop(null);
+  }
+
+  get isPlaying() {
+    return this.$store.state.isPlaying;
   }
 }
 </script>

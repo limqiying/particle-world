@@ -37,7 +37,7 @@ export default class Editor extends Vue {
   }
 
   togglePlay() {
-      this.$store.dispatch('togglePlay');
+    this.$store.dispatch("togglePlay");
   }
 }
 // export default {
