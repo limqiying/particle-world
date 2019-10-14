@@ -20,3 +20,41 @@ export class ParticleGravity implements ParticleForceGenerator {
     }
   }
 }
+
+export class ParticleSpring implements ParticleForceGenerator {
+  private _other: Particle;
+  private _springConstant: number;
+  private _restLength: number;
+
+  constructor(other: Particle, k: number, ell: number) {
+    this._other = other;
+    this._springConstant = k;
+    this._restLength = ell;
+  }
+
+  get restLength(): number {
+    return this._restLength;
+  }
+
+  set restLength(value: number) {
+    this._restLength = value;
+  }
+
+  get springConstant(): number {
+    return this._springConstant;
+  }
+
+  set springConstant(value: number) {
+    this._springConstant = value;
+  }
+
+  updateForce(particle: Particle, dt: number): void {
+    const force: Vector3 = particle.position;
+    force.sub(this._other.position);
+    const magnitude: number =
+      this._springConstant * Math.abs(force.length() - this._restLength);
+    force.normalize();
+    force.multiplyScalar(-1 * magnitude);
+    particle.addForce(force);
+  }
+}

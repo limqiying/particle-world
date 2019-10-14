@@ -89,7 +89,7 @@ export default class Scene extends Vue {
   }
 
   pause(): void {
-     this.renderer.setAnimationLoop(() => {
+    this.renderer.setAnimationLoop(() => {
       this.renderScene();
     });
   }
