@@ -75,7 +75,6 @@ export default class Particle {
   }
 
   integrate(dt: number): void {
-    // console.log(JSON.stringify(this._forceAccumulator));
     if (this.inverseMass > 0.0) {
       this._position.addScaledVector(this._velocity, dt);
       const newAcc: Vector3 = this._acceleration.clone();
@@ -83,6 +82,5 @@ export default class Particle {
       this._velocity.addScaledVector(newAcc, dt);
     }
     this.clearAccumulartor();
-    // console.log(JSON.stringify(this._forceAccumulator));
   }
 }
