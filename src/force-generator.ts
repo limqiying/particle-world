@@ -22,12 +22,10 @@ export class ParticleGravity implements ParticleForceGenerator {
 }
 
 export class ParticleDrag implements ParticleForceGenerator {
-
   constructor(private k1: number, private k2: number) {}
   updateForce(particle: Particle, dt: number) {
-    const force = particle.position.clone()
+    const force = particle.position.clone();
   }
-
 }
 
 export class ParticleSpring implements ParticleForceGenerator {
