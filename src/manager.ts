@@ -30,8 +30,8 @@ export class ParticleManager {
     // this._forceRegistry.add(p1, gravity);
     this._forceRegistry.add(p2, gravity);
 
-    const k: number = 1.0;
-    const ell: number = 2.1;
+    const k: number = 2.0;
+    const ell: number = 3.0;
     const anchor: Vector3 = new Vector3(0.0, 0.0, 0.0);
     const spring1: ParticleAnchoredSpring = new ParticleAnchoredSpring(
       anchor,
