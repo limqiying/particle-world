@@ -14,7 +14,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import * as THREE from "three";
-import { ParticleManager, ParticleInfo } from "../manager";
+import { ParticleInfo } from "../manager";
 import ParticleMesh from "./ParticleMesh.vue";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import store from "@/store";
@@ -58,7 +58,7 @@ export default class Scene extends Vue {
 
   private renderer = new THREE.WebGLRenderer({ alpha: true });
 
-  private manager: ParticleManager = new ParticleManager();
+  // private manager: ParticleManager = new ParticleManager();
 
   private camera!: THREE.PerspectiveCamera;
 
@@ -75,8 +75,8 @@ export default class Scene extends Vue {
     }
   }
 
-  private update(): void {
-    this.manager.updateParticles(0.1);
+  private update(dt: number): void {
+    this.$store.dispatch('updateParticles', dt)
   }
 
   renderScene(): void {
@@ -87,7 +87,7 @@ export default class Scene extends Vue {
   play(): void {
     this.renderer.setAnimationLoop(() => {
       this.renderScene();
-      this.update();
+      this.update(0.01);
     });
   }
 
