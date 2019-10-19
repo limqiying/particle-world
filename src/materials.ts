@@ -2,10 +2,17 @@
 
 import * as THREE from "three";
 
-export const particleMaterial = new THREE.MeshToonMaterial({
-  color: "#212121",
-  flatShading: true
-});
+export function particleMaterial(color: string): THREE.MeshToonMaterial {
+  return new THREE.MeshToonMaterial({
+    color: color,
+    flatShading: true
+  });
+}
+
+// = new THREE.MeshToonMaterial({
+//   color: "#212121",
+//   flatShading: true
+// });
 export const springMaterial = new THREE.LineBasicMaterial({
   color: 0xffffff,
   linewidth: 2,

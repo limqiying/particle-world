@@ -1,7 +1,9 @@
 <template>
   <v-app>
     <Editor />
-    <Scene></Scene>
+    <v-content>
+      <Scene />
+    </v-content>
   </v-app>
 </template>
 

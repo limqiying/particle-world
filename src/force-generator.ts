@@ -21,13 +21,6 @@ export class ParticleGravity implements ParticleForceGenerator {
   }
 }
 
-export class ParticleDrag implements ParticleForceGenerator {
-  constructor(private k1: number, private k2: number) {}
-  updateForce(particle: Particle, dt: number) {
-    const force = particle.position.clone();
-  }
-}
-
 export class ParticleSpring implements ParticleForceGenerator {
   private _other: Particle;
   private _springConstant: number;
@@ -56,10 +49,13 @@ export class ParticleSpring implements ParticleForceGenerator {
   }
 
   updateForce(particle: Particle, dt: number): void {
-    const force: Vector3 = particle.position.clone();
-    force.sub(this._other.position);
+    // remove abs for update force
+    // updated explicit euler to velocity updates without acceleration
+    // check if updating position of each particle incrementally will affect
+    const force: Vector3 = new Vector3();
+    force.subVectors(particle.position, this._other.position);
     const magnitude: number =
-      this._springConstant * Math.abs(force.length() - this._restLength);
+      this._springConstant * (force.length() - this._restLength);
     force.normalize();
     force.multiplyScalar(-1 * magnitude);
     particle.addForce(force);

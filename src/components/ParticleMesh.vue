@@ -21,11 +21,17 @@ export default class ParticleMesh extends Vue {
   private particle!: Particle;
 
   @Prop({ type: Number, required: true })
-  private radius: number = 1;
+  private radius!: number;
+
+  @Prop({ type: String, required: true })
+  private color!: string;
+
+  @Prop({ type: Number, required: true })
+  private id!: number;
 
   private object3D = new THREE.Mesh(
     particleGeometry(this.radius),
-    particleMaterial
+    particleMaterial(this.color)
   );
 
   $parent!: Scene;

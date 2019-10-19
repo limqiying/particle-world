@@ -1,10 +1,12 @@
 <template>
   <div class="scene" ref="scene">
     <ParticleMesh
-      v-for="p in manager.particles"
+      v-for="p in particlesInfo"
       :key="p.id"
-      :particle="p"
-      :radius="1"
+      :particle="p.particle"
+      :radius="p.radius"
+      :color="p.color"
+      :id="p.id"
     />
   </div>
 </template>
@@ -12,10 +14,11 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import * as THREE from "three";
-import { ParticleManager } from "../manager";
+import { ParticleManager, ParticleInfo } from "../manager";
 import ParticleMesh from "./ParticleMesh.vue";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import store from "@/store";
+import emitter from "tiny-emitter"
 
 @Component<Scene>({
   components: {
@@ -49,7 +52,7 @@ import store from "@/store";
 export default class Scene extends Vue {
   private hemisphereLight = new THREE.HemisphereLight(0xaaaaaa, 0x000000, 0.9);
 
-  private directionalLight = new THREE.DirectionalLight(0xffffff, 0.9);
+  private directionalLight = new THREE.DirectionalLight(0xffffff, 0.3);
 
   private ambientLight = new THREE.AmbientLight(0xdc8874, 0.5);
 
@@ -76,7 +79,7 @@ export default class Scene extends Vue {
     this.manager.updateParticles(0.1);
   }
 
-  private renderScene(): void {
+  renderScene(): void {
     this.controls.update();
     this.renderer.render(this.scene, this.camera);
   }
@@ -97,6 +100,11 @@ export default class Scene extends Vue {
   get isPlaying() {
     return this.$store.state.isPlaying;
   }
+
+  get particlesInfo() {
+    return this.$store.state.particlesInfo;
+  }
+
 }
 </script>
 

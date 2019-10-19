@@ -1,7 +1,6 @@
 import { Vector3 } from "three";
 
 export default class Particle {
-  private _id: number;
   private _position: Vector3;
   private _velocity: Vector3;
   private _acceleration: Vector3 = new Vector3(0.0, 0.0, 0.0);
@@ -9,13 +8,17 @@ export default class Particle {
   private _inverseMass: number;
   private _mass: number;
   private _forceAccumulator: Vector3 = new Vector3(0.0, 0.0, 0.0);
+  private _nextVelocity: Vector3;
+  private _nextPosition: Vector3;
 
-  constructor(id: number, position: Vector3, velocity: Vector3, mass: number) {
-    this._id = id;
+  constructor(position: Vector3, velocity: Vector3, mass: number) {
     this._position = position;
     this._velocity = velocity;
     this._mass = mass;
     this._inverseMass = 1.0 / mass;
+
+    this._nextVelocity = velocity;
+    this._nextPosition = position;
   }
 
   public get mass(): number {
@@ -76,11 +79,19 @@ export default class Particle {
 
   integrate(dt: number): void {
     if (this.inverseMass > 0.0) {
-      this._position.addScaledVector(this._velocity, dt);
-      const newAcc: Vector3 = this._acceleration.clone();
-      newAcc.addScaledVector(this._forceAccumulator, this._inverseMass);
-      this._velocity.addScaledVector(newAcc, dt);
+      this._nextPosition.addScaledVector(this._velocity, dt);
+      // const newAcc: Vector3 = this._acceleration.clone();
+      // newAcc.addScaledVector(this._forceAccumulator, this._inverseMass);
+      this._nextVelocity.addScaledVector(
+        this._forceAccumulator,
+        dt * this._inverseMass
+      );
     }
     this.clearAccumulartor();
+  }
+
+  stepForward(): void {
+    this.position = this._nextPosition;
+    this.velocity = this._nextVelocity;
   }
 }
