@@ -4,7 +4,6 @@
       <!-- <v-list-item-title class="title">Scene Editor</v-list-item-title> -->
       <NewParticleCard></NewParticleCard>
     </v-list>
-    
 
     <template v-slot:append>
       <div class="pa-2">

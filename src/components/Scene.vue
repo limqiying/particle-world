@@ -18,7 +18,7 @@ import { ParticleInfo } from "../manager";
 import ParticleMesh from "./ParticleMesh.vue";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import store from "@/store";
-import emitter from "tiny-emitter"
+import emitter from "tiny-emitter";
 
 @Component<Scene>({
   components: {
@@ -58,8 +58,6 @@ export default class Scene extends Vue {
 
   private renderer = new THREE.WebGLRenderer({ alpha: true });
 
-  // private manager: ParticleManager = new ParticleManager();
-
   private camera!: THREE.PerspectiveCamera;
 
   private controls!: OrbitControls;
@@ -76,7 +74,7 @@ export default class Scene extends Vue {
   }
 
   private update(dt: number): void {
-    this.$store.dispatch('updateParticles', dt)
+    this.$store.dispatch("updateParticles", dt);
   }
 
   renderScene(): void {
@@ -104,7 +102,6 @@ export default class Scene extends Vue {
   get particlesInfo() {
     return this.$store.state.particlesInfo;
   }
-
 }
 </script>
 

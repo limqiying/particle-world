@@ -1,9 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { ParticleInfo } from "./manager";
-import * as ForceGenerator from "./force-generator"
-import Particle from './particle';
-import ParticleForceRegistry from './force-registry';
+import * as ForceGenerator from "./force-generator";
+import Particle from "./particle";
+import ParticleForceRegistry from "./force-registry";
 
 Vue.use(Vuex);
 
@@ -27,7 +27,7 @@ export default new Vuex.Store({
       state.particlesInfo.forEach(p => p.particle.stepForward());
     },
     addGravityForce(state, particle: Particle) {
-      const gravity = new ForceGenerator.ParticleGravity()
+      const gravity = new ForceGenerator.ParticleGravity();
       state.forceRegistry.add(particle, gravity);
     },
     updateForces(state, dt: number) {
@@ -41,13 +41,13 @@ export default new Vuex.Store({
     addParticle(context, particleInfo) {
       context.commit("addParticle", particleInfo);
       if (particleInfo.gravity) {
-        context.commit('addGravityForce', particleInfo.particle)
+        context.commit("addGravityForce", particleInfo.particle);
       }
     },
-    updateParticles(context, dt: number){
-      context.commit('updateForces', dt);
-      context.commit('integrateParticles', dt);
-      context.commit('stepForward', dt);
+    updateParticles(context, dt: number) {
+      context.commit("updateForces", dt);
+      context.commit("integrateParticles", dt);
+      context.commit("stepForward", dt);
     }
   }
 });

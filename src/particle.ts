@@ -79,19 +79,18 @@ export default class Particle {
 
   integrate(dt: number): void {
     if (this.inverseMass > 0.0) {
-      this._nextPosition.addScaledVector(this._velocity, dt);
-      // const newAcc: Vector3 = this._acceleration.clone();
-      // newAcc.addScaledVector(this._forceAccumulator, this._inverseMass);
-      this._nextVelocity.addScaledVector(
-        this._forceAccumulator,
-        dt * this._inverseMass
-      );
+      this._position.addScaledVector(this._velocity, dt);
+      const newAcc: Vector3 = this._acceleration.clone();
+      newAcc.addScaledVector(this._forceAccumulator, this._inverseMass);
+      this._velocity.addScaledVector(newAcc, dt);
     }
     this.clearAccumulartor();
   }
 
   stepForward(): void {
-    this.position = this._nextPosition;
-    this.velocity = this._nextVelocity;
+    console.log(this._position.y);
+    console.log(this._velocity.y);
+    // this.position = this._nextPosition;
+    // this.velocity = this._nextVelocity;
   }
 }
