@@ -88,7 +88,7 @@ export default class ParticleContact {
       if (this.twoParticles) {
         this._particles[1].velocity.addScaledVector(
           impulsePerIMass,
-          this._particles[1].inverseMass
+          -1 * this._particles[1].inverseMass
         );
       }
     }
@@ -121,8 +121,8 @@ export default class ParticleContact {
   }
 
   private computeTotalInverseMass(): number {
-    let totalInverseMass: number = this._particles[0].inverseMass;
-    if (this.twoParticles) totalInverseMass -= this._particles[1].inverseMass;
-    return totalInverseMass;
+    return this.twoParticles
+      ? this.particles[0].inverseMass + this.particles[1].inverseMass
+      : this.particles[0].inverseMass;
   }
 }

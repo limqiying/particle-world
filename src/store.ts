@@ -7,7 +7,8 @@ import ParticleForceRegistry from "./force-registry";
 import ParticleContactResolver from "./particle-contact-resolver";
 import {
   ParticleContactGenerator,
-  GroundContacts
+  GroundContacts,
+  ParticleParticleContacts
 } from "./particle-contact-generator";
 import ParticleContact from "./particle-contact";
 
@@ -20,7 +21,7 @@ export default new Vuex.Store({
     forceRegistry: new ParticleForceRegistry(),
     contacts: new Array<ParticleContact>(),
     resolver: new ParticleContactResolver(100),
-    contactGenerators: Array<ParticleContactGenerator>(),
+    contactGenerators: [new ParticleParticleContacts()],
     showGroundPlane: false,
     groundPos: -3.0
   },
@@ -60,8 +61,10 @@ export default new Vuex.Store({
       state.contacts.length = 0;
     },
     addGroundPlane(state) {
-      state.showGroundPlane = true;
-      state.contactGenerators.push(new GroundContacts());
+      if (!state.showGroundPlane) {
+        state.showGroundPlane = true;
+        state.contactGenerators.push(new GroundContacts());
+      }
     },
     removeGroundPlane(state) {
       state.showGroundPlane = false;
@@ -86,6 +89,7 @@ export default new Vuex.Store({
       context.commit("stepForward", dt);
       context.commit("generateContacts");
       context.commit("resolveContacts", dt);
+      context.commit("clearContacts");
     },
     generateContacts(context) {
       context.commit("generateContacts");

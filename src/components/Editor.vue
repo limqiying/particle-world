@@ -6,16 +6,21 @@
         <NewParticleCard />
       </v-list-item>
 
-              <div class="mx-4">
-      <v-list-item>
+      <div class="mx-4">
+        <v-list-item>
           <v-btn block @click="addGroundPlane">Add Ground Plane</v-btn>
-      </v-list-item>
+        </v-list-item>
       </div>
     </v-list>
 
     <template v-slot:append>
       <div class="pa-2">
-        <v-btn block color="light-green lighten-2" @click="togglePlay" height="80px">
+        <v-btn
+          block
+          color="light-green lighten-2"
+          @click="togglePlay"
+          height="80px"
+        >
           <div v-if="!isPlaying">
             <v-icon large>play_arrow</v-icon>
           </div>
