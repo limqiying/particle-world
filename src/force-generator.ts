@@ -49,9 +49,6 @@ export class ParticleSpring implements ParticleForceGenerator {
   }
 
   updateForce(particle: Particle, dt: number): void {
-    // remove abs for update force
-    // updated explicit euler to velocity updates without acceleration
-    // check if updating position of each particle incrementally will affect
     const force: Vector3 = new Vector3();
     force.subVectors(particle.position, this._other.position);
     const magnitude: number =

@@ -8,7 +8,12 @@
 
       <div class="mx-4">
         <v-list-item>
-          <v-btn block @click="addGroundPlane" :disabled="disableGroundPlaneButton">Add Ground Plane</v-btn>
+          <v-btn
+            block
+            @click="addGroundPlane"
+            :disabled="disableGroundPlaneButton"
+            >Add Ground Plane</v-btn
+          >
         </v-list-item>
       </div>
     </v-list>
@@ -49,7 +54,7 @@ export default class Editor extends Vue {
   }
 
   get disableGroundPlaneButton() {
-    return this.$store.state.showGroundPlane
+    return this.$store.state.showGroundPlane;
   }
 }
 </script>
