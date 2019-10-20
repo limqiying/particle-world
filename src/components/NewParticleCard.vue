@@ -118,7 +118,7 @@ export default class NewParticleCard extends Vue {
   private radius: number = 1.0;
   private mass: number = 1.0;
   private nextID: number = 0;
-  private gravity: boolean = false;
+  private gravity: boolean = true;
 
   get disableInputs() {
     return this.$store.state.isPlaying;

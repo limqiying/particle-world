@@ -11,3 +11,5 @@ export function springGeometry(v1: Vector3, v2: Vector3) {
   geometry.addAttribute("position", new THREE.BufferAttribute(positions, 3));
   return geometry;
 }
+
+export const groundGeometry = new THREE.PlaneGeometry(10, 10);

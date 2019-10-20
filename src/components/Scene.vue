@@ -1,5 +1,8 @@
 <template>
   <div class="scene" ref="scene">
+    <div v-if="showGroundPlane">
+      <Ground />
+    </div>
     <ParticleMesh
       v-for="p in particlesInfo"
       :key="p.id"
@@ -16,36 +19,19 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import * as THREE from "three";
 import { ParticleInfo } from "../manager";
 import ParticleMesh from "./ParticleMesh.vue";
+import Ground from "./Ground.vue";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import store from "@/store";
 import emitter from "tiny-emitter";
 
 @Component<Scene>({
   components: {
-    ParticleMesh
+    ParticleMesh,
+    Ground
   },
   mounted() {
     const el = this.$refs.scene as Element;
-    this.camera = new THREE.PerspectiveCamera(
-      75,
-      el.clientWidth / el.clientHeight,
-      0.1,
-      1000
-    );
-    this.renderer.setSize(el.clientWidth, el.clientHeight);
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-
-    this.scene.add(
-      this.ambientLight,
-      this.hemisphereLight,
-      this.directionalLight
-    );
-    this.directionalLight.position.set(150, 350, 350);
-
-    el.appendChild(this.renderer.domElement);
-    this.controls.enablePan = false;
-    this.camera.position.z = 5;
-
+    this.setUpScene(el);
     this.renderScene();
   }
 })
@@ -77,6 +63,28 @@ export default class Scene extends Vue {
     this.$store.dispatch("updateParticles", dt);
   }
 
+  private setUpScene(el: Element) {
+    this.camera = new THREE.PerspectiveCamera(
+      75,
+      (el.clientWidth - 350) / el.clientHeight,
+      0.1,
+      1000
+    );
+    this.renderer.setSize(el.clientWidth - 350, el.clientHeight);
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+
+    this.scene.add(
+      this.ambientLight,
+      this.hemisphereLight,
+      this.directionalLight
+    );
+    this.directionalLight.position.set(150, 350, 350);
+
+    el.appendChild(this.renderer.domElement);
+    this.controls.enablePan = false;
+    this.camera.position.z = 5;
+  }
+
   renderScene(): void {
     this.controls.update();
     this.renderer.render(this.scene, this.camera);
@@ -101,6 +109,10 @@ export default class Scene extends Vue {
 
   get particlesInfo() {
     return this.$store.state.particlesInfo;
+  }
+
+  get showGroundPlane() {
+    return this.$store.state.showGroundPlane;
   }
 }
 </script>

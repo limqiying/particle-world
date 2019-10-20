@@ -2,12 +2,20 @@
   <v-navigation-drawer permanent right app width="350px">
     <v-list>
       <!-- <v-list-item-title class="title">Scene Editor</v-list-item-title> -->
-      <NewParticleCard></NewParticleCard>
+      <v-list-item>
+        <NewParticleCard />
+      </v-list-item>
+
+              <div class="mx-4">
+      <v-list-item>
+          <v-btn block @click="addGroundPlane">Add Ground Plane</v-btn>
+      </v-list-item>
+      </div>
     </v-list>
 
     <template v-slot:append>
       <div class="pa-2">
-        <v-btn block @click="togglePlay" height="80px">
+        <v-btn block color="light-green lighten-2" @click="togglePlay" height="80px">
           <div v-if="!isPlaying">
             <v-icon large>play_arrow</v-icon>
           </div>
@@ -35,6 +43,9 @@ export default class Editor extends Vue {
   }
   togglePlay() {
     this.$store.dispatch("togglePlay");
+  }
+  addGroundPlane() {
+    store.dispatch("showGroundPlane");
   }
 }
 </script>
