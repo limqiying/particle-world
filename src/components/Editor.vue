@@ -54,7 +54,7 @@ export default class Editor extends Vue {
   }
 
   get disableGroundPlaneButton() {
-    return this.$store.state.showGroundPlane;
+    return this.$store.state.showGroundPlane || this.$store.state.isPlaying;
   }
 }
 </script>

@@ -8,17 +8,12 @@ export default class Particle {
   private _inverseMass: number;
   private _mass: number;
   private _forceAccumulator: Vector3 = new Vector3(0.0, 0.0, 0.0);
-  private _nextVelocity: Vector3;
-  private _nextPosition: Vector3;
 
   constructor(position: Vector3, velocity: Vector3, mass: number) {
     this._position = position;
     this._velocity = velocity;
     this._mass = mass;
     this._inverseMass = 1.0 / mass;
-
-    this._nextVelocity = velocity;
-    this._nextPosition = position;
   }
 
   public get mass(): number {
