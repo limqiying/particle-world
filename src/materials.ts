@@ -1,6 +1,7 @@
 // materials.ts
 
 import * as THREE from "three";
+import image from "./assets/grass.jpg"
 
 export function particleMaterial(color: string): THREE.MeshToonMaterial {
   return new THREE.MeshToonMaterial({
@@ -16,7 +17,9 @@ export const springMaterial = new THREE.LineBasicMaterial({
   linejoin: "round" //ignored by WebGLRenderer
 });
 
-export const groundMaterial = new THREE.MeshToonMaterial({
-  color: "#53843f",
+const texture = new THREE.TextureLoader().load(image)
+export const groundMaterial = new THREE.MeshLambertMaterial({
+  // color: "#53843f",
+  map: texture,
   side: THREE.DoubleSide
 });
