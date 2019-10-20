@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { Vector3 } from "three";
 
 export function particleGeometry(radius: number) {
-  return new THREE.SphereBufferGeometry(radius);
+  return new THREE.SphereBufferGeometry(radius, 100, 100);
 }
 
 export function springGeometry(v1: Vector3, v2: Vector3) {

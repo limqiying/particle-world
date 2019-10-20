@@ -37,7 +37,7 @@ import store from "@/store";
 export default class Scene extends Vue {
   private hemisphereLight = new THREE.HemisphereLight(0xaaaaaa, 0x000000, 0.9);
 
-  private directionalLight = new THREE.DirectionalLight(0xffffff, 0.3);
+  private directionalLight = new THREE.DirectionalLight(0xffffff, 1);
 
   private ambientLight = new THREE.AmbientLight(0xdc8874, 0.5);
 

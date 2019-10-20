@@ -4,7 +4,7 @@ export default class Particle {
   private _position: Vector3;
   private _velocity: Vector3;
   private _acceleration: Vector3 = new Vector3(0.0, 0.0, 0.0);
-  private _damping: number = 0.0;
+  private _damping: number = 0.5;
   private _inverseMass: number;
   private _mass: number;
   private _forceAccumulator: Vector3 = new Vector3(0.0, 0.0, 0.0);
@@ -79,6 +79,8 @@ export default class Particle {
         this._forceAccumulator,
         dt * this._inverseMass
       );
+      const dampingScalar = Math.pow(this._damping, dt);
+      this._velocity.multiplyScalar(dampingScalar);
     }
     this.clearAccumulartor();
   }

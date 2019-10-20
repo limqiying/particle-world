@@ -15,10 +15,10 @@ export class GroundContacts implements ParticleContactGenerator {
       const pos = p.particle.position;
       if (
         pos.y - p.radius <= store.state.groundPos &&
-        pos.x > -5.0 &&
-        pos.x < 5.0 &&
-        pos.z > -5.0 &&
-        pos.z < 5.0
+        pos.x > -200.0 &&
+        pos.x < 200.0 &&
+        pos.z > -200.0 &&
+        pos.z < 200.0
       ) {
         const pc = new ParticleContact(
           [p.particle],

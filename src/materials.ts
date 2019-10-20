@@ -3,10 +3,9 @@
 import * as THREE from "three";
 import image from "./assets/grass.jpg";
 
-export function particleMaterial(color: string): THREE.MeshToonMaterial {
-  return new THREE.MeshToonMaterial({
-    color: color,
-    flatShading: true
+export function particleMaterial(color: string): THREE.MeshPhongMaterial {
+  return new THREE.MeshPhongMaterial({
+    color: color
   });
 }
 
