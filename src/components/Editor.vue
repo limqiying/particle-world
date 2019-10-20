@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer permanent right app width="350px">
+  <v-navigation-drawer dark permanent right app width="350px">
     <v-list>
       <!-- <v-list-item-title class="title">Scene Editor</v-list-item-title> -->
       <v-list-item>
@@ -17,7 +17,6 @@
       <div class="pa-2">
         <v-btn
           block
-          color="light-green lighten-2"
           @click="togglePlay"
           height="80px"
         >
