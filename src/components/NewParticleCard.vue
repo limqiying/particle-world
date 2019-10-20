@@ -135,10 +135,10 @@ export default class NewParticleCard extends Vue {
       +this.vel_y,
       +this.vel_z
     );
-    const particle: Particle = new Particle(position, velocity, this.mass);
+    const particle: Particle = new Particle(position, velocity, +this.mass);
     const particleInfo: ParticleInfo = {
       id: this.nextID++,
-      radius: this.radius,
+      radius: +this.radius,
       color: this.color,
       particle: particle,
       gravity: this.gravity
