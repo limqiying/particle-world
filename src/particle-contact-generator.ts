@@ -12,7 +12,8 @@ export class GroundContacts implements ParticleContactGenerator {
 
   addContact(contacts: ParticleContact[], limit: number): void {
     store.state.particlesInfo.forEach((p: ParticleInfo) => {
-      if (p.particle.position.y - p.radius <= store.state.groundPos) {
+      const pos = p.particle.position
+      if (pos.y - p.radius <= store.state.groundPos && pos.x > -5.0 && pos.x < 5.0 && pos.z > -5.0 && pos.z < 5.0) {
         const pc = new ParticleContact(
           [p.particle],
           0.2,
@@ -29,12 +30,11 @@ export class ParticleParticleContacts implements ParticleContactGenerator {
   addContact(contacts: ParticleContact[], limit: number) {
     for (let i = 0; i < store.state.particlesInfo.length; i++) {
       for (let j = i + 1; j < store.state.particlesInfo.length; j++) {
-        // if (i != j) {
         const p1 = store.state.particlesInfo[i];
         const p2 = store.state.particlesInfo[j];
         const minDistance = p1.radius + p2.radius;
         const relativePosition = new Vector3();
-        relativePosition.subVectors(p2.particle.position, p1.particle.position);
+        relativePosition.subVectors(p1.particle.position, p2.particle.position);
         const distance = relativePosition.length();
         relativePosition.normalize();
         if (distance <= minDistance) {
@@ -46,7 +46,6 @@ export class ParticleParticleContacts implements ParticleContactGenerator {
           );
           contacts.push(pc);
         }
-        // }
       }
     }
   }

@@ -17,6 +17,6 @@ export const springMaterial = new THREE.LineBasicMaterial({
 });
 
 export const groundMaterial = new THREE.MeshToonMaterial({
-  color: "green",
+  color: "#53843f",
   side: THREE.DoubleSide
 });
