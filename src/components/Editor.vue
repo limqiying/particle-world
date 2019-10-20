@@ -15,11 +15,7 @@
 
     <template v-slot:append>
       <div class="pa-2">
-        <v-btn
-          block
-          @click="togglePlay"
-          height="80px"
-        >
+        <v-btn block @click="togglePlay" height="80px">
           <div v-if="!isPlaying">
             <v-icon large>play_arrow</v-icon>
           </div>

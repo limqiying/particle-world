@@ -71,7 +71,7 @@ export default class Scene extends Vue {
       1000
     );
     this.renderer.setSize(el.clientWidth - 350, el.clientHeight);
-    this.renderer.setClearColor ("#333840", 1);
+    this.renderer.setClearColor("#333840", 1);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 
     this.scene.add(
