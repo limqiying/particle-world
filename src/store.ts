@@ -23,9 +23,13 @@ export default new Vuex.Store({
     resolver: new ParticleContactResolver(100),
     contactGenerators: [new ParticleParticleContacts()],
     showGroundPlane: false,
-    groundPos: -3.0
+    groundPos: -3.0,
+    restitution: 0.5
   },
   mutations: {
+    setRestitution(state, value: number) {
+      state.restitution = value;
+    },
     togglePlay(state) {
       state.isPlaying = !state.isPlaying;
     },
@@ -71,6 +75,18 @@ export default new Vuex.Store({
       state.contactGenerators = state.contactGenerators.filter(
         cg => !(cg.constructor == GroundContacts)
       );
+    },
+    setCollisionDetection(state, value) {
+      if (!value) {
+        state.contactGenerators.length = 0;
+      } else {
+        if (state.contactGenerators.length == 0) {
+          console.log("no detection");
+          state.contactGenerators.push(new ParticleParticleContacts());
+          state.contactGenerators.push(new GroundContacts());
+          console.log(state.contactGenerators);
+        }
+      }
     }
   },
   actions: {
@@ -99,6 +115,12 @@ export default new Vuex.Store({
     },
     showGroundPlane(context) {
       context.commit("addGroundPlane");
+    },
+    setRestitution(context, value: number) {
+      context.commit("setRestitution", value);
+    },
+    setCollisionDetection(context, value) {
+      context.commit("setCollisionDetection", value);
     }
   }
 });

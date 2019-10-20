@@ -18,6 +18,9 @@ export const springMaterial = new THREE.LineBasicMaterial({
 });
 
 const texture = new THREE.TextureLoader().load(image);
+texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+texture.repeat.set( 25, 25 );
+texture.anisotropy = 16;
 export const groundMaterial = new THREE.MeshLambertMaterial({
   // color: "#53843f",
   map: texture,

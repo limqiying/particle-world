@@ -12,4 +12,4 @@ export function springGeometry(v1: Vector3, v2: Vector3) {
   return geometry;
 }
 
-export const groundGeometry = new THREE.PlaneGeometry(10, 10);
+export const groundGeometry = new THREE.PlaneGeometry(400, 400);

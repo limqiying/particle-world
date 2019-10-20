@@ -22,7 +22,7 @@ export class GroundContacts implements ParticleContactGenerator {
       ) {
         const pc = new ParticleContact(
           [p.particle],
-          0.2,
+          store.state.restitution,
           this.upNormal,
           store.state.groundPos - (p.particle.position.y - p.radius)
         );
@@ -46,7 +46,7 @@ export class ParticleParticleContacts implements ParticleContactGenerator {
         if (distance <= minDistance) {
           const pc = new ParticleContact(
             [p1.particle, p2.particle],
-            0.5,
+            store.state.restitution,
             relativePosition,
             minDistance - distance
           );

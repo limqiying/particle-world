@@ -6,7 +6,7 @@
         <NewParticleCard />
       </v-list-item>
 
-      <div class="mx-4">
+      <div class="mx-2" justify="center">
         <v-list-item>
           <v-btn
             block
@@ -14,6 +14,39 @@
             :disabled="disableGroundPlaneButton"
             >Add Ground Plane</v-btn
           >
+        </v-list-item>
+        <v-list-item>
+          <v-col>
+            <v-checkbox
+              label="Detect Collisions"
+              v-model="detectCollisions"
+            ></v-checkbox>
+            <!-- <v-text-field
+            :disabled="!detectCollisions"
+            label="Coefficient Of Restitution"
+            v-model="restitution"
+            type="number"
+          >
+            restitution
+          </v-text-field> -->
+          </v-col>
+          <v-col>
+            <v-row>
+              <v-subheader justify="center">Restitution</v-subheader>
+            </v-row>
+            <v-row>
+              <v-slider
+                :disabled="!detectCollisions"
+                v-model="restitution"
+                thumb-label
+                :thumb-size="30"
+                thumb-color="grey darken-4"
+                min="0"
+                max="1"
+                step="0.01"
+              ></v-slider>
+            </v-row>
+          </v-col>
         </v-list-item>
       </div>
     </v-list>
@@ -43,6 +76,19 @@ import { Component, Prop, Watch, Vue } from "vue-property-decorator";
   }
 })
 export default class Editor extends Vue {
+  private restitution: number = 0.5;
+  private detectCollisions: boolean = true;
+
+  @Watch("restitution")
+  onRestitutionChanged(value: number) {
+    store.dispatch("setRestitution", +value);
+  }
+
+  @Watch("detectCollisions")
+  onCollisionDetectionChanged(value: boolean) {
+    store.dispatch("setCollisionDetection", value);
+  }
+
   get isPlaying() {
     return this.$store.state.isPlaying;
   }
@@ -52,7 +98,6 @@ export default class Editor extends Vue {
   addGroundPlane() {
     store.dispatch("showGroundPlane");
   }
-
   get disableGroundPlaneButton() {
     return this.$store.state.showGroundPlane || this.$store.state.isPlaying;
   }

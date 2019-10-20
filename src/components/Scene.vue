@@ -22,7 +22,6 @@ import ParticleMesh from "./ParticleMesh.vue";
 import Ground from "./Ground.vue";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import store from "@/store";
-import emitter from "tiny-emitter";
 
 @Component<Scene>({
   components: {
