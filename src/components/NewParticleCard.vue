@@ -126,14 +126,14 @@ export default class NewParticleCard extends Vue {
 
   insertParticle(): void {
     const position: Vector3 = new Vector3(
-      parseFloat(this.pos_x),
-      parseFloat(this.pos_y),
-      parseFloat(this.pos_z)
+      +this.pos_x,
+      +this.pos_y,
+      +this.pos_z
     );
     const velocity: Vector3 = new Vector3(
-      parseFloat(this.vel_x),
-      parseFloat(this.vel_y),
-      parseFloat(this.vel_z)
+      +this.vel_x,
+      +this.vel_y,
+      +this.vel_z
     );
     const particle: Particle = new Particle(position, velocity, this.mass);
     const particleInfo: ParticleInfo = {
