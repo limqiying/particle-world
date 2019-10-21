@@ -1,7 +1,9 @@
 <template>
   <div class="scene" ref="scene">
     <div v-if="showGroundPlane">
-      <Ground />
+      -->
+      <!-- <Ground /> -->
+      <Box/>
     </div>
     <ParticleMesh
       v-for="p in particlesInfo"
@@ -20,13 +22,15 @@ import * as THREE from "three";
 import { ParticleInfo } from "../manager";
 import ParticleMesh from "./ParticleMesh.vue";
 import Ground from "./Ground.vue";
+import Box from "./Box.vue";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import store from "@/store";
 
 @Component<Scene>({
   components: {
     ParticleMesh,
-    Ground
+    Ground,
+    Box
   },
   mounted() {
     const el = this.$refs.scene as Element;
@@ -72,7 +76,6 @@ export default class Scene extends Vue {
     this.renderer.setSize(el.clientWidth - 350, el.clientHeight);
     this.renderer.setClearColor("#333840", 1);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-
 
     this.scene.add(
       this.ambientLight,

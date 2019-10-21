@@ -8,26 +8,58 @@ export interface ParticleContactGenerator {
 }
 
 export class GroundContacts implements ParticleContactGenerator {
-  private upNormal = new Vector3(0.0, 1.0, 0.0);
+  private normal: Vector3;
+  private coordinate: string;
+  private threshold: number;
+
+  constructor(normal: Vector3, coordinate: string, threshold: number) {
+    this.normal = normal;
+    this.coordinate = coordinate;
+    this.threshold = threshold;
+  }
+
+  private getCoordinateComponent(position: Vector3) {
+    return this.coordinate == "x"
+      ? position.x
+      : this.coordinate == "y"
+      ? position.y
+      : position.z;
+  }
 
   addContact(contacts: ParticleContact[], limit: number): void {
     store.state.particlesInfo.forEach((p: ParticleInfo) => {
       const pos = p.particle.position;
       if (
-        pos.y - p.radius <= store.state.groundPos &&
-        pos.x > -200.0 &&
-        pos.x < 200.0 &&
-        pos.z > -200.0 &&
-        pos.z < 200.0
+        (this.threshold > 0 &&
+          this.getCoordinateComponent(pos) + p.radius > this.threshold) ||
+        (this.threshold < 0 &&
+          this.getCoordinateComponent(pos) - p.radius < this.threshold)
       ) {
         const pc = new ParticleContact(
           [p.particle],
           store.state.restitution,
-          this.upNormal,
-          store.state.groundPos - (p.particle.position.y - p.radius)
+          this.normal,
+          this.threshold > 0
+            ? this.getCoordinateComponent(pos) + p.radius - this.threshold
+            : this.threshold - (this.getCoordinateComponent(pos) - p.radius)
         );
         contacts.push(pc);
       }
+      // if (
+      //   pos.y - p.radius <= store.state.groundPos &&
+      //   pos.x > -200.0 &&
+      //   pos.x < 200.0 &&
+      //   pos.z > -200.0 &&
+      //   pos.z < 200.0
+      // ) {
+      //   const pc = new ParticleContact(
+      //     [p.particle],
+      //     store.state.restitution,
+      //     this.normal,
+      //     store.state.groundPos - (p.particle.position.y - p.radius)
+      //   );
+      //   contacts.push(pc);
+      // }
     });
   }
 }

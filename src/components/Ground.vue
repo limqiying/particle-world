@@ -20,7 +20,7 @@ export default class Ground extends Vue {
 
   $parent!: Scene;
 
-  private updatePosition() {
+  private updatePosition(): void {
     this.object3D.position.y = -3.0;
     this.object3D.rotation.x = Math.PI / 2;
   }

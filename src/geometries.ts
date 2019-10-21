@@ -13,3 +13,7 @@ export function springGeometry(v1: Vector3, v2: Vector3) {
 }
 
 export const groundGeometry = new THREE.PlaneGeometry(400, 400);
+
+export const boxBaseGeometry = new THREE.BoxGeometry(20, 0.5, 15);
+export const boxHorizontalSideGeometry = new THREE.BoxGeometry(0.5, 3, 15);
+export const boxVerticalSideGeometry = new THREE.BoxGeometry(21, 3, 0.5);

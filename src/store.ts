@@ -11,6 +11,7 @@ import {
   ParticleParticleContacts
 } from "./particle-contact-generator";
 import ParticleContact from "./particle-contact";
+import { Vector3 } from 'three';
 
 Vue.use(Vuex);
 
@@ -23,8 +24,8 @@ export default new Vuex.Store({
     resolver: new ParticleContactResolver(100),
     contactGenerators: [new ParticleParticleContacts()],
     showGroundPlane: false,
-    groundPos: -3.0,
-    restitution: 0.5
+    showBox: false,
+    restitution: 0.5,
   },
   mutations: {
     setRestitution(state, value: number) {
@@ -67,7 +68,17 @@ export default new Vuex.Store({
     addGroundPlane(state) {
       if (!state.showGroundPlane) {
         state.showGroundPlane = true;
-        state.contactGenerators.push(new GroundContacts());
+        state.contactGenerators.push(new GroundContacts(new Vector3(0.0, 1.0, 0.0), 'y', -1.0));
+      }
+    },
+    addBox(state) {
+      if (!state.showGroundPlane) {
+        state.showGroundPlane = true;
+        state.contactGenerators.push(new GroundContacts(new Vector3(0.0, 1.0, 0.0), 'y', -1.0));
+        state.contactGenerators.push(new GroundContacts(new Vector3(1.0, 0.0, 0.0), 'x', -10.0));
+        state.contactGenerators.push(new GroundContacts(new Vector3(-1.0, 0.0, 0.0), 'x', 10.0));
+        state.contactGenerators.push(new GroundContacts(new Vector3(0.0, 0.0, 1.0), 'z', -7.5));
+        state.contactGenerators.push(new GroundContacts(new Vector3(0.0, 0.0, -1.0), 'z', 7.5));
       }
     },
     removeGroundPlane(state) {
@@ -81,10 +92,8 @@ export default new Vuex.Store({
         state.contactGenerators.length = 0;
       } else {
         if (state.contactGenerators.length == 0) {
-          console.log("no detection");
           state.contactGenerators.push(new ParticleParticleContacts());
-          state.contactGenerators.push(new GroundContacts());
-          console.log(state.contactGenerators);
+          state.contactGenerators.push(new GroundContacts(new Vector3(0.0, 1.0, 0.0), 'y', -1.0));
         }
       }
     }
@@ -121,6 +130,9 @@ export default new Vuex.Store({
     },
     setCollisionDetection(context, value) {
       context.commit("setCollisionDetection", value);
+    },
+    addBox(context) {
+      context.commit("addBox");
     }
   }
 });

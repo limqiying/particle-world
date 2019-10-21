@@ -25,3 +25,9 @@ export const groundMaterial = new THREE.MeshLambertMaterial({
   map: texture,
   side: THREE.DoubleSide
 });
+
+export function boxMaterial(color: string): THREE.MeshPhongMaterial {
+  return new THREE.MeshPhongMaterial({
+    color: color
+  });
+}

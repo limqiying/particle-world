@@ -96,7 +96,7 @@ export default class Editor extends Vue {
     this.$store.dispatch("togglePlay");
   }
   addGroundPlane() {
-    store.dispatch("showGroundPlane");
+    store.dispatch("addBox");
   }
   get disableGroundPlaneButton() {
     return this.$store.state.showGroundPlane || this.$store.state.isPlaying;

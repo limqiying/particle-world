@@ -4,7 +4,7 @@ export default class Particle {
   private _position: Vector3;
   private _velocity: Vector3;
   private _acceleration: Vector3 = new Vector3(0.0, 0.0, 0.0);
-  private _damping: number = 0.5;
+  private _damping: number = 0.9;
   private _inverseMass: number;
   private _mass: number;
   private _forceAccumulator: Vector3 = new Vector3(0.0, 0.0, 0.0);
