@@ -1,7 +1,6 @@
 <template>
   <div class="scene" ref="scene">
     <div v-if="showGroundPlane">
-      -->
       <!-- <Ground /> -->
       <Box />
     </div>
@@ -97,7 +96,7 @@ export default class Scene extends Vue {
   play(): void {
     this.renderer.setAnimationLoop(() => {
       this.renderScene();
-      this.update(0.05);
+      this.update(0.01);
     });
   }
 

@@ -156,7 +156,13 @@ export default new Vuex.Store({
     },
     addSpring(context, springInfo: SpringInfo) {
       context.commit("addParticle", springInfo.pi1);
+      if (springInfo.pi1.gravity) {
+        context.commit("addGravityForce", springInfo.pi1.particle);
+      }
       context.commit("addParticle", springInfo.pi2);
+      if (springInfo.pi2.gravity) {
+        context.commit("addGravityForce", springInfo.pi2.particle);
+      }
       context.commit("addSpringForce", springInfo);
     }
   }
