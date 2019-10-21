@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { ParticleInfo } from "./manager";
+import { ParticleInfo, SpringInfo } from "./manager";
 import * as ForceGenerator from "./force-generator";
 import Particle from "./particle";
 import ParticleForceRegistry from "./force-registry";
@@ -11,7 +11,7 @@ import {
   ParticleParticleContacts
 } from "./particle-contact-generator";
 import ParticleContact from "./particle-contact";
-import { Vector3 } from 'three';
+import { Vector3 } from "three";
 
 Vue.use(Vuex);
 
@@ -25,7 +25,7 @@ export default new Vuex.Store({
     contactGenerators: [new ParticleParticleContacts()],
     showGroundPlane: false,
     showBox: false,
-    restitution: 0.5,
+    restitution: 0.5
   },
   mutations: {
     setRestitution(state, value: number) {
@@ -50,6 +50,12 @@ export default new Vuex.Store({
       const gravity = new ForceGenerator.ParticleGravity();
       state.forceRegistry.add(particle, gravity);
     },
+    addSpringForce(state, springInfo: SpringInfo) {
+      const force2 = new ForceGenerator.ParticleSpring(springInfo.pi1.particle, springInfo.springConstant, springInfo.restLength);
+      const force1 = new ForceGenerator.ParticleSpring(springInfo.pi2.particle, springInfo.springConstant, springInfo.restLength);
+      state.forceRegistry.add(springInfo.pi1.particle, force1);
+      state.forceRegistry.add(springInfo.pi2.particle, force2);
+    },
     updateForces(state, dt: number) {
       state.forceRegistry.updateForces(dt);
     },
@@ -68,17 +74,29 @@ export default new Vuex.Store({
     addGroundPlane(state) {
       if (!state.showGroundPlane) {
         state.showGroundPlane = true;
-        state.contactGenerators.push(new GroundContacts(new Vector3(0.0, 1.0, 0.0), 'y', -1.0));
+        state.contactGenerators.push(
+          new GroundContacts(new Vector3(0.0, 1.0, 0.0), "y", -1.0)
+        );
       }
     },
     addBox(state) {
       if (!state.showGroundPlane) {
         state.showGroundPlane = true;
-        state.contactGenerators.push(new GroundContacts(new Vector3(0.0, 1.0, 0.0), 'y', -1.0));
-        state.contactGenerators.push(new GroundContacts(new Vector3(1.0, 0.0, 0.0), 'x', -10.0));
-        state.contactGenerators.push(new GroundContacts(new Vector3(-1.0, 0.0, 0.0), 'x', 10.0));
-        state.contactGenerators.push(new GroundContacts(new Vector3(0.0, 0.0, 1.0), 'z', -7.5));
-        state.contactGenerators.push(new GroundContacts(new Vector3(0.0, 0.0, -1.0), 'z', 7.5));
+        state.contactGenerators.push(
+          new GroundContacts(new Vector3(0.0, 1.0, 0.0), "y", -1.0)
+        );
+        state.contactGenerators.push(
+          new GroundContacts(new Vector3(1.0, 0.0, 0.0), "x", -10.0)
+        );
+        state.contactGenerators.push(
+          new GroundContacts(new Vector3(-1.0, 0.0, 0.0), "x", 10.0)
+        );
+        state.contactGenerators.push(
+          new GroundContacts(new Vector3(0.0, 0.0, 1.0), "z", -7.5)
+        );
+        state.contactGenerators.push(
+          new GroundContacts(new Vector3(0.0, 0.0, -1.0), "z", 7.5)
+        );
       }
     },
     removeGroundPlane(state) {
@@ -93,7 +111,9 @@ export default new Vuex.Store({
       } else {
         if (state.contactGenerators.length == 0) {
           state.contactGenerators.push(new ParticleParticleContacts());
-          state.contactGenerators.push(new GroundContacts(new Vector3(0.0, 1.0, 0.0), 'y', -1.0));
+          state.contactGenerators.push(
+            new GroundContacts(new Vector3(0.0, 1.0, 0.0), "y", -1.0)
+          );
         }
       }
     }
@@ -133,6 +153,11 @@ export default new Vuex.Store({
     },
     addBox(context) {
       context.commit("addBox");
+    },
+    addSpring(context, springInfo: SpringInfo) {
+      context.commit("addParticle", springInfo.pi1);
+      context.commit("addParticle", springInfo.pi2);
+      context.commit("addSpringForce", springInfo);
     }
   }
 });

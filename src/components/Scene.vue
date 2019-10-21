@@ -3,7 +3,7 @@
     <div v-if="showGroundPlane">
       -->
       <!-- <Ground /> -->
-      <Box/>
+      <Box />
     </div>
     <ParticleMesh
       v-for="p in particlesInfo"
@@ -97,7 +97,7 @@ export default class Scene extends Vue {
   play(): void {
     this.renderer.setAnimationLoop(() => {
       this.renderScene();
-      this.update(0.01);
+      this.update(0.05);
     });
   }
 

@@ -109,11 +109,19 @@
       </v-row>
       <div v-if="spring">
         <v-row justify="center" class="mx-2">
-          <v-col cols="12" sm="8" md="8">
+          <v-col cols="12" sm="8" md="6">
             <v-text-field
               label="spring constant"
               type="number"
-              v-model="pos_x"
+              v-model="springConstant"
+              :disabled="disableInputs"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" sm="8" md="6">
+            <v-text-field
+              label="rest length"
+              type="number"
+              v-model="restLength"
               :disabled="disableInputs"
             ></v-text-field>
           </v-col>
@@ -124,7 +132,7 @@
             <v-text-field
               label="position-x"
               type="number"
-              v-model="pos_x"
+              v-model="pos_x2"
               :disabled="disableInputs"
             ></v-text-field>
           </v-col>
@@ -132,7 +140,7 @@
             <v-text-field
               label="position-y"
               type="number"
-              v-model="pos_y"
+              v-model="pos_y2"
               :disabled="disableInputs"
             ></v-text-field>
           </v-col>
@@ -140,7 +148,7 @@
             <v-text-field
               label="position-z"
               type="number"
-              v-model="pos_z"
+              v-model="pos_z2"
               :disabled="disableInputs"
             ></v-text-field>
           </v-col>
@@ -150,7 +158,7 @@
             <v-text-field
               label="velocity-x"
               type="number"
-              v-model="vel_x"
+              v-model="vel_x2"
               :disabled="disableInputs"
             ></v-text-field>
           </v-col>
@@ -158,7 +166,7 @@
             <v-text-field
               label="velocity-y"
               type="number"
-              v-model="vel_y"
+              v-model="vel_y2"
               :disabled="disableInputs"
             ></v-text-field>
           </v-col>
@@ -166,14 +174,14 @@
             <v-text-field
               label="velocity-z"
               type="number"
-              v-model="vel_z"
+              v-model="vel_z2"
               :disabled="disableInputs"
             ></v-text-field>
           </v-col>
         </v-row>
         <v-row></v-row>
         <v-color-picker
-          v-model="color"
+          v-model="color2"
           flat
           hide-inputs
           hide-canvas
@@ -185,7 +193,7 @@
             <v-text-field
               label="radius"
               type="number"
-              v-model="radius"
+              v-model="radius2"
               :disabled="disableInputs"
             ></v-text-field>
           </v-col>
@@ -193,13 +201,13 @@
             <v-text-field
               label="mass"
               type="number"
-              v-model="mass"
+              v-model="mass2"
               :disabled="disableInputs"
             ></v-text-field>
           </v-col>
           <v-col cols="12" sm="8" md="4">
             <v-checkbox
-              v-model="gravity"
+              v-model="gravity2"
               label="gravity"
               :disabled="disableInputs"
             ></v-checkbox>
@@ -222,7 +230,7 @@ import { Vue, Component } from "vue-property-decorator";
 import store from "@/store";
 import { Vector3 } from "three";
 import Particle from "../particle";
-import { ParticleInfo } from "../manager";
+import { ParticleInfo, SpringInfo } from "../manager";
 import { mdiArrowUpDownBold } from "@mdi/js";
 
 @Component<NewParticleCard>({})
@@ -238,8 +246,23 @@ export default class NewParticleCard extends Vue {
   private mass: number = 1.0;
   private nextID: number = 0;
   private gravity: boolean = true;
-  private springIcon = mdiArrowUpDownBold;
+
   private spring: boolean = false;
+
+  private springConstant: number = 1.0;
+  private restLength: number = 1.0;
+
+  private color2: string = "#FF00FF";
+  private pos_x2: number = 0.0;
+  private pos_y2: number = 0.0;
+  private pos_z2: number = 0.0;
+  private vel_x2: number = 0.0;
+  private vel_y2: number = 0.0;
+  private vel_z2: number = 0.0;
+  private radius2: number = 1.0;
+  private mass2: number = 1.0;
+  private nextID2: number = 0;
+  private gravity2: boolean = true;
 
   get disableInputs() {
     return this.$store.state.isPlaying;
@@ -264,7 +287,36 @@ export default class NewParticleCard extends Vue {
       particle: particle,
       gravity: this.gravity
     };
-    this.$store.dispatch("addParticle", particleInfo);
+
+    if (this.spring) {
+      const position2: Vector3 = new Vector3(
+        +this.pos_x2,
+        +this.pos_y2,
+        +this.pos_z2
+      );
+      const velocity2: Vector3 = new Vector3(
+        +this.vel_x2,
+        +this.vel_y2,
+        +this.vel_z2
+      );
+      const particle2: Particle = new Particle(position2, velocity2, +this.mass2);
+      const particleInfo2: ParticleInfo = {
+        id: this.nextID++,
+        radius: +this.radius2,
+        color: this.color2,
+        particle: particle2,
+        gravity: this.gravity2
+      };
+      const springInfo: SpringInfo = {
+        pi1: particleInfo,
+        pi2: particleInfo2,
+        springConstant: +this.springConstant,
+        restLength: +this.restLength
+      } as SpringInfo;
+      this.$store.dispatch("addSpring", springInfo);
+    } else {
+      this.$store.dispatch("addParticle", particleInfo);
+    }
     this.resetValues();
   }
 
@@ -275,7 +327,17 @@ export default class NewParticleCard extends Vue {
     this.vel_x = 0.0;
     this.vel_y = 0.0;
     this.vel_z = 0.0;
+    this.mass = 1.0;
     this.radius = 1.0;
+
+    this.pos_x2 = 0.0;
+    this.pos_y2 = 0.0;
+    this.pos_z2 = 0.0;
+    this.vel_x2 = 0.0;
+    this.vel_y2 = 0.0;
+    this.vel_z2 = 0.0;
+    this.mass2 = 1.0;
+    this.radius2 = 1.0;
   }
 }
 </script>
