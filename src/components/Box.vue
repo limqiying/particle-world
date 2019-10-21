@@ -11,7 +11,7 @@ import {
   boxHorizontalSideGeometry,
   boxVerticalSideGeometry
 } from "../geometries";
-import { boxMaterial } from "../materials";
+import { boxMaterial, groundMaterial } from "../materials";
 
 @Component<Box>({
   mounted() {
@@ -28,12 +28,12 @@ export default class Box extends Vue {
     // add base board
     const base: THREE.Object3D = new THREE.Mesh(
       boxBaseGeometry,
-      boxMaterial("#013220")
+      groundMaterial
     );
     base.position.y = -1.25;
     this.object3D.add(base);
 
-    const sideMaterial = boxMaterial("#013220");
+    const sideMaterial = boxMaterial("#1B0D03");
     // add side boards
     const left = new THREE.Mesh(boxHorizontalSideGeometry, sideMaterial);
     left.position.x = -10.25;
