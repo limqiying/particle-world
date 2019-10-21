@@ -1,24 +1,9 @@
-# engine
+# Particle World
 
-## Project setup
-```
-npm install
-```
+A browser-based particle game engine build in Vue, Typescript and ThreeJS. 
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+![alt text](public/readme-images/ball-hit.gif)
 
-### Compiles and minifies for production
-```
-npm run build
-```
+![alt text](public/readme-images/ball-explosion.gif)
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+![alt text](public/readme-images/pool.gif)
