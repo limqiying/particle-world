@@ -12,7 +12,7 @@
             block
             @click="addGroundPlane"
             :disabled="disableGroundPlaneButton"
-            >Add Ground Plane</v-btn
+            >Add Box</v-btn
           >
         </v-list-item>
         <v-list-item>
@@ -21,14 +21,6 @@
               label="Detect Collisions"
               v-model="detectCollisions"
             ></v-checkbox>
-            <!-- <v-text-field
-            :disabled="!detectCollisions"
-            label="Coefficient Of Restitution"
-            v-model="restitution"
-            type="number"
-          >
-            restitution
-          </v-text-field> -->
           </v-col>
           <v-col>
             <v-row>
