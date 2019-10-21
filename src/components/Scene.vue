@@ -37,7 +37,7 @@ import store from "@/store";
 export default class Scene extends Vue {
   private hemisphereLight = new THREE.HemisphereLight(0xaaaaaa, 0x000000, 0.9);
 
-  private directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+  private directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
 
   private ambientLight = new THREE.AmbientLight(0xdc8874, 0.5);
 
@@ -72,6 +72,7 @@ export default class Scene extends Vue {
     this.renderer.setSize(el.clientWidth - 350, el.clientHeight);
     this.renderer.setClearColor("#333840", 1);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+
 
     this.scene.add(
       this.ambientLight,
