@@ -9,8 +9,8 @@ export interface ParticleInfo {
 }
 
 export interface SpringInfo {
-  pi1: ParticleInfo,
-  pi2: ParticleInfo,
-  springConstant: number,
-  restLength: number
+  pi1: ParticleInfo;
+  pi2: ParticleInfo;
+  springConstant: number;
+  restLength: number;
 }

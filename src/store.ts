@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import { ParticleInfo, SpringInfo } from "./manager";
 import * as ForceGenerator from "./force-generator";
 import Particle from "./particle";
+import { Spring, createSpring } from "./spring";
 import ParticleForceRegistry from "./force-registry";
 import ParticleContactResolver from "./particle-contact-resolver";
 import {
@@ -19,6 +20,7 @@ export default new Vuex.Store({
   state: {
     isPlaying: false,
     particlesInfo: Array<ParticleInfo>(),
+    springs: Array<Spring>(),
     forceRegistry: new ParticleForceRegistry(),
     contacts: new Array<ParticleContact>(),
     resolver: new ParticleContactResolver(100),
@@ -51,10 +53,24 @@ export default new Vuex.Store({
       state.forceRegistry.add(particle, gravity);
     },
     addSpringForce(state, springInfo: SpringInfo) {
-      const force2 = new ForceGenerator.ParticleSpring(springInfo.pi1.particle, springInfo.springConstant, springInfo.restLength);
-      const force1 = new ForceGenerator.ParticleSpring(springInfo.pi2.particle, springInfo.springConstant, springInfo.restLength);
+      const force2 = new ForceGenerator.ParticleSpring(
+        springInfo.pi1.particle,
+        springInfo.springConstant,
+        springInfo.restLength
+      );
+      const force1 = new ForceGenerator.ParticleSpring(
+        springInfo.pi2.particle,
+        springInfo.springConstant,
+        springInfo.restLength
+      );
       state.forceRegistry.add(springInfo.pi1.particle, force1);
       state.forceRegistry.add(springInfo.pi2.particle, force2);
+      state.springs.push(
+        createSpring(
+          springInfo.pi1.particle.position,
+          springInfo.pi2.particle.position
+        )
+      );
     },
     updateForces(state, dt: number) {
       state.forceRegistry.updateForces(dt);

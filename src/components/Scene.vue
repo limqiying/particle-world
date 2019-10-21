@@ -12,6 +12,7 @@
       :color="p.color"
       :id="p.id"
     />
+    <SpringMesh v-for="s in springs" :key="s.id" :spring="s" />
   </div>
 </template>
 
@@ -24,12 +25,14 @@ import Ground from "./Ground.vue";
 import Box from "./Box.vue";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import store from "@/store";
+import SpringMesh from "./SpringMesh.vue";
 
 @Component<Scene>({
   components: {
     ParticleMesh,
     Ground,
-    Box
+    Box,
+    SpringMesh
   },
   mounted() {
     const el = this.$refs.scene as Element;
@@ -116,6 +119,10 @@ export default class Scene extends Vue {
 
   get showGroundPlane() {
     return this.$store.state.showGroundPlane;
+  }
+
+  get springs() {
+    return this.$store.state.springs;
   }
 }
 </script>
