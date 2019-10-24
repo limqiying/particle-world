@@ -103,7 +103,7 @@ export class ParticleStiffSpring implements ParticleForceGenerator {
   private springConstant: number;
   private damping: number;
 
-  constructor(anchor: Vector3, springConstant: number, damping: number) {
+  constructor(anchor: Vector3, springConstant: number, damping: number=0.5) {
     this.anchor = anchor;
     this.springConstant = springConstant;
     this.damping = damping;
