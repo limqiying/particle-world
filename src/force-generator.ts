@@ -98,24 +98,24 @@ export class ParticleAnchoredSpring implements ParticleForceGenerator {
 }
 
 export class ParticleStiffSpring implements ParticleForceGenerator {
-
   private anchor: Vector3;
   private springConstant: number;
   private damping: number;
 
-  constructor(anchor: Vector3, springConstant: number, damping: number=0.5) {
+  constructor(anchor: Vector3, springConstant: number, damping: number = 0.5) {
     this.anchor = anchor;
     this.springConstant = springConstant;
     this.damping = damping;
   }
   updateForce(particle: Particle, dt: number): void {
     if (!particle.hasFiniteMass()) {
-      return
+      return;
     } else {
       const position: Vector3 = particle.position.clone();
       const velocity: Vector3 = particle.velocity.clone();
-      const gamma: number = 0.5 * Math.sqrt( 4 * this.springConstant * this.damping * this.damping);
-      
+      const gamma: number =
+        0.5 * Math.sqrt(4 * this.springConstant * this.damping * this.damping);
+
       if (gamma == 0) return;
       position.multiplyScalar(this.damping / (2.0 * gamma));
       velocity.multiplyScalar(1.0 / gamma);
@@ -129,11 +129,10 @@ export class ParticleStiffSpring implements ParticleForceGenerator {
 
       const force: Vector3 = new Vector3();
       force.subVectors(target, position);
-      force.multiplyScalar(1.0 / dt * dt);
+      force.multiplyScalar((1.0 / dt) * dt);
       force.addScaledVector(velocity, -1 * dt);
       force.multiplyScalar(particle.mass);
       particle.addForce(force);
     }
   }
-  
 }

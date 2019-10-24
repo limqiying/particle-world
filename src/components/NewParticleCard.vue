@@ -1,6 +1,6 @@
 <template>
   <v-card outlined class="ma-1 pa-1">
-    <div v-if="spring">
+    <div v-if="spring && !anchored">
       <v-card-title>First Particle</v-card-title>
     </div>
     <div v-else>
@@ -108,6 +108,9 @@
         </v-tooltip>
       </v-row>
       <div v-if="spring">
+        <v-row justify="center" class="mx-2 my-0">
+          <v-checkbox v-model="anchored" label="Fix other end"> </v-checkbox>
+        </v-row>
         <v-row justify="center" class="mx-2">
           <v-col cols="12" sm="8" md="6">
             <v-text-field
@@ -126,7 +129,12 @@
             ></v-text-field>
           </v-col>
         </v-row>
-        <v-card-title>Second Particle</v-card-title>
+        <div v-if="anchored">
+          <v-card-title>Anchored End</v-card-title>
+        </div>
+        <div v-else>
+          <v-card-title>Second Particle</v-card-title>
+        </div>
         <v-row class="mx-2">
           <v-col cols="12" sm="8" md="4">
             <v-text-field
@@ -153,66 +161,67 @@
             ></v-text-field>
           </v-col>
         </v-row>
-        <v-row class="mx-2">
-          <v-col cols="12" sm="8" md="4">
-            <v-text-field
-              label="velocity-x"
-              type="number"
-              v-model="vel_x2"
-              :disabled="disableInputs"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" sm="8" md="4">
-            <v-text-field
-              label="velocity-y"
-              type="number"
-              v-model="vel_y2"
-              :disabled="disableInputs"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" sm="8" md="4">
-            <v-text-field
-              label="velocity-z"
-              type="number"
-              v-model="vel_z2"
-              :disabled="disableInputs"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row></v-row>
-        <v-color-picker
-          v-model="color2"
-          flat
-          hide-inputs
-          hide-canvas
-          class="mx-auto"
-          :disabled="disableInputs"
-        ></v-color-picker>
-        <v-row class="mx-2">
-          <v-col cols="12" sm="8" md="4">
-            <v-text-field
-              label="radius"
-              type="number"
-              v-model="radius2"
-              :disabled="disableInputs"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" sm="8" md="4">
-            <v-text-field
-              label="mass"
-              type="number"
-              v-model="mass2"
-              :disabled="disableInputs"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" sm="8" md="4">
-            <v-checkbox
-              v-model="gravity2"
-              label="gravity"
-              :disabled="disableInputs"
-            ></v-checkbox>
-          </v-col>
-        </v-row>
+        <div v-if="!anchored">
+          <v-row class="mx-2">
+            <v-col cols="12" sm="8" md="4">
+              <v-text-field
+                label="velocity-x"
+                type="number"
+                v-model="vel_x2"
+                :disabled="disableInputs"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="8" md="4">
+              <v-text-field
+                label="velocity-y"
+                type="number"
+                v-model="vel_y2"
+                :disabled="disableInputs"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="8" md="4">
+              <v-text-field
+                label="velocity-z"
+                type="number"
+                v-model="vel_z2"
+                :disabled="disableInputs"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-color-picker
+            v-model="color2"
+            flat
+            hide-inputs
+            hide-canvas
+            class="mx-auto"
+            :disabled="disableInputs"
+          ></v-color-picker>
+          <v-row class="mx-2">
+            <v-col cols="12" sm="8" md="4">
+              <v-text-field
+                label="radius"
+                type="number"
+                v-model="radius2"
+                :disabled="disableInputs"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="8" md="4">
+              <v-text-field
+                label="mass"
+                type="number"
+                v-model="mass2"
+                :disabled="disableInputs"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="8" md="4">
+              <v-checkbox
+                v-model="gravity2"
+                label="gravity"
+                :disabled="disableInputs"
+              ></v-checkbox>
+            </v-col>
+          </v-row>
+        </div>
       </div>
       <v-btn
         block
@@ -230,7 +239,7 @@ import { Vue, Component } from "vue-property-decorator";
 import store from "@/store";
 import { Vector3 } from "three";
 import Particle from "../particle";
-import { ParticleInfo, SpringInfo } from "../manager";
+import { ParticleInfo, SpringInfo, AnchoredSpringInfo } from "../manager";
 import { mdiArrowUpDownBold } from "@mdi/js";
 
 @Component<NewParticleCard>({})
@@ -248,7 +257,7 @@ export default class NewParticleCard extends Vue {
   private gravity: boolean = true;
 
   private spring: boolean = false;
-
+  private anchored: boolean = false;
   private springConstant: number = 1.0;
   private restLength: number = 1.0;
 
@@ -288,7 +297,7 @@ export default class NewParticleCard extends Vue {
       gravity: this.gravity
     };
 
-    if (this.spring) {
+    if (this.spring && !this.anchored) {
       const position2: Vector3 = new Vector3(
         +this.pos_x2,
         +this.pos_y2,
@@ -318,6 +327,19 @@ export default class NewParticleCard extends Vue {
         restLength: +this.restLength
       } as SpringInfo;
       this.$store.dispatch("addSpring", springInfo);
+    } else if (this.spring && this.anchored) {
+      const anchor: Vector3 = new Vector3(
+        +this.pos_x2,
+        +this.pos_y2,
+        +this.pos_z2
+      );
+      const anchoredSpringInfo: AnchoredSpringInfo = {
+        pi1: particleInfo,
+        anchor: anchor,
+        springConstant: +this.springConstant,
+        restLength: +this.restLength
+      } as AnchoredSpringInfo;
+      this.$store.dispatch("addAnchoredSpring", anchoredSpringInfo);
     } else {
       this.$store.dispatch("addParticle", particleInfo);
     }
