@@ -1,5 +1,5 @@
 import Particle from "./particle";
-import { Vector3 } from "three";
+import { Vector3, Vector, Vector4 } from "three";
 
 export interface ParticleForceGenerator {
   updateForce: (particle: Particle, dt: number) => void;
@@ -95,4 +95,45 @@ export class ParticleAnchoredSpring implements ParticleForceGenerator {
     force.multiplyScalar(magnitude);
     particle.addForce(force);
   }
+}
+
+export class ParticleStiffSpring implements ParticleForceGenerator {
+
+  private anchor: Vector3;
+  private springConstant: number;
+  private damping: number;
+
+  constructor(anchor: Vector3, springConstant: number, damping: number) {
+    this.anchor = anchor;
+    this.springConstant = springConstant;
+    this.damping = damping;
+  }
+  updateForce(particle: Particle, dt: number): void {
+    if (!particle.hasFiniteMass()) {
+      return
+    } else {
+      const position: Vector3 = particle.position.clone();
+      const velocity: Vector3 = particle.velocity.clone();
+      const gamma: number = 0.5 * Math.sqrt( 4 * this.springConstant * this.damping * this.damping);
+      
+      if (gamma == 0) return;
+      position.multiplyScalar(this.damping / (2.0 * gamma));
+      velocity.multiplyScalar(1.0 / gamma);
+      const c: Vector3 = new Vector3();
+      c.addVectors(position, velocity);
+
+      const target: Vector3 = new Vector3();
+      target.addScaledVector(particle.position, Math.cos(gamma * dt));
+      target.addScaledVector(c, Math.sin(gamma * dt));
+      target.multiplyScalar(Math.exp(-0.5 * dt * this.damping));
+
+      const force: Vector3 = new Vector3();
+      force.subVectors(target, position);
+      force.multiplyScalar(1.0 / dt * dt);
+      force.addScaledVector(velocity, -1 * dt);
+      force.multiplyScalar(particle.mass);
+      particle.addForce(force);
+    }
+  }
+  
 }
