@@ -38,6 +38,8 @@ import SpringMesh from "./SpringMesh.vue";
     const el = this.$refs.scene as Element;
     this.setUpScene(el);
     this.renderScene();
+    this.play();
+    this.pause();
   }
 })
 export default class Scene extends Vue {
