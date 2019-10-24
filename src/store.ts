@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { ParticleInfo, SpringInfo } from "./manager";
+import { ParticleInfo, SpringInfo, AnchoredSpringInfo } from "./manager";
 import * as ForceGenerator from "./force-generator";
 import Particle from "./particle";
 import { Spring, createSpring } from "./spring";
@@ -69,6 +69,28 @@ export default new Vuex.Store({
         createSpring(
           springInfo.pi1.particle.position,
           springInfo.pi2.particle.position
+        )
+      );
+    },
+    addAnchoredSpringForce(state, anchoredSpringInfo: AnchoredSpringInfo) {
+      let force;
+      if (anchoredSpringInfo.springConstant > 100) {
+        force = new ForceGenerator.ParticleStiffSpring(
+          anchoredSpringInfo.anchor,
+          anchoredSpringInfo.springConstant
+        )
+      } else {
+        force = new ForceGenerator.ParticleAnchoredSpring(
+          anchoredSpringInfo.anchor,
+          anchoredSpringInfo.springConstant,
+          anchoredSpringInfo.restLength
+        )
+      } 
+      state.forceRegistry.add(anchoredSpringInfo.pi1.particle, force);
+      state.springs.push(
+        createSpring(
+          anchoredSpringInfo.pi1.particle.position,
+          anchoredSpringInfo.anchor
         )
       );
     },
@@ -180,6 +202,13 @@ export default new Vuex.Store({
         context.commit("addGravityForce", springInfo.pi2.particle);
       }
       context.commit("addSpringForce", springInfo);
+    },
+    addAnchoredSpring(context, anchoredSpringInfo: AnchoredSpringInfo) {
+      context.commit("addParticle", anchoredSpringInfo.pi1);
+      if (anchoredSpringInfo.pi1.gravity) {
+        context.commit("addGravityForce", anchoredSpringInfo.pi1.particle);
+      }
+      context.commit("addAnchoredSpringForce", anchoredSpringInfo);
     }
   }
 });
