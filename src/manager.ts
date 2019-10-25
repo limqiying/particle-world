@@ -1,5 +1,8 @@
 import Particle from "./particle";
+<<<<<<< HEAD
 import { Vector3 } from "three";
+=======
+>>>>>>> fix manager exports
 
 export interface ParticleInfo {
   id: number;
