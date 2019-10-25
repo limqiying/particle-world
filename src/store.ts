@@ -80,11 +80,11 @@ export default new Vuex.Store({
       //     anchoredSpringInfo.springConstant
       //   )
       // } else {
-        force = new ForceGenerator.ParticleAnchoredSpring(
-          anchoredSpringInfo.anchor,
-          anchoredSpringInfo.springConstant,
-          anchoredSpringInfo.restLength
-        )
+      force = new ForceGenerator.ParticleAnchoredSpring(
+        anchoredSpringInfo.anchor,
+        anchoredSpringInfo.springConstant,
+        anchoredSpringInfo.restLength
+      );
       // }
       state.forceRegistry.add(anchoredSpringInfo.pi1.particle, force);
       state.springs.push(

@@ -1,5 +1,5 @@
 import Particle from "./particle";
-import { Vector3, Vector, Vector4 } from "three";
+import { Vector3 } from "three";
 
 export interface ParticleForceGenerator {
   updateForce: (particle: Particle, dt: number) => void;
@@ -120,7 +120,7 @@ export class ParticleStiffSpring implements ParticleForceGenerator {
       if (gamma == 0) return;
       const c: Vector3 = new Vector3();
       c.addScaledVector(position, this.damping / (2.0 * gamma));
-      c.addScaledVector(velocity, (1.0 / gamma));
+      c.addScaledVector(velocity, 1.0 / gamma);
 
       const target: Vector3 = new Vector3();
       target.addScaledVector(position, Math.cos(gamma * dt));
